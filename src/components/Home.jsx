@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { getCategories } from '../services/api';
+import Aside from './Aside';
 
 class home extends Component {
   state = {
@@ -19,6 +20,7 @@ class home extends Component {
     return (
       <>
         <div>home</div>
+        <Aside />
         <input
           type="text"
           name="research"
