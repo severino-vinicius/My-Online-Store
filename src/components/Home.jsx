@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { getCategories } from '../services/api';
 import Aside from './Aside';
 
-class home extends Component {
+class Home extends Component {
   state = {
     products: [],
   };
@@ -38,4 +38,4 @@ class home extends Component {
   }
 }
 
-export default home;
+export default Home;
