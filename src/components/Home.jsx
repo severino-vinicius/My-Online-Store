@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { getCategories } from '../services/api';
-import ShoppingCartButton from '../components/ShoppingCartButton';
+import Aside from './Aside';
 
 class Home extends Component {
   state = {
@@ -20,6 +20,7 @@ class Home extends Component {
     return (
       <>
         <div>home</div>
+        <Aside />
         <input
           type="text"
           name="research"
@@ -32,7 +33,6 @@ class Home extends Component {
               Digite algum termo de pesquisa ou escolha uma categoria.
             </p>
           )}
-        <ShoppingCartButton />
       </>
     );
   }
