@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { getCategories } from '../services/api';
+import ShoppingCartButton from '../components/ShoppingCartButton';
 
-class home extends Component {
+class Home extends Component {
   state = {
     products: [],
   };
@@ -31,9 +32,10 @@ class home extends Component {
               Digite algum termo de pesquisa ou escolha uma categoria.
             </p>
           )}
+        <ShoppingCartButton />
       </>
     );
   }
 }
 
-export default home;
+export default Home;
