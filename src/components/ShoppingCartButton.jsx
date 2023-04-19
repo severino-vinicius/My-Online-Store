@@ -20,7 +20,7 @@ class ShoppingCartButton extends Component {
           data-testid="shopping-cart-button"
           onClick={ this.redirectToCart }
         >
-          Ir pro Carrinho
+          Carrinho
         </button>
         { redirect
          && <Redirect to="/shopping-cart" />}
