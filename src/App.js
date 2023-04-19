@@ -8,7 +8,6 @@ function App() {
     <div>
       <Switch>
         <Route exact path="/" component={ Home } />
-        {/* render={ () => <Home research={ research } /> } */}
       </Switch>
     </div>
   );
