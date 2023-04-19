@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { getCategories } from '../services/api';
+import ShoppingCartButton from './ShoppingCartButton';
 import Aside from './Aside';
 
 class Home extends Component {
@@ -33,6 +34,7 @@ class Home extends Component {
               Digite algum termo de pesquisa ou escolha uma categoria.
             </p>
           )}
+        <ShoppingCartButton />
       </>
     );
   }
