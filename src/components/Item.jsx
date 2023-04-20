@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Item extends Component {
   style = { // Estilização do componente
@@ -10,16 +11,18 @@ class Item extends Component {
 
   render() {
     const { result } = this.props;
-    const { title, thumbnail, price } = result;
+    const { title, thumbnail, price, id } = result;
 
     return (
-      <div style={ this.style } data-testid="product">
-
-        <h6>{title}</h6>
-        <p>{ price }</p>
-        <img src={ thumbnail } alt={ title } />
+      <div style={ this.style }>
+        <Link to={ `/product-detail/${id}` } data-testid="product-detail-link">
+          <div data-testid="product">
+            <h6>{title}</h6>
+            <p>{ price }</p>
+            <img src={ thumbnail } alt={ title } />
+          </div>
+        </Link>
         <button type="button">Adicionar ao carrinho</button>
-
       </div>
 
     );
@@ -32,6 +35,6 @@ Item.propTypes = {
     thumbnail: PropTypes.string,
     title: PropTypes.string,
   }).isRequired,
-};
+}.isRequired;
 
 export default Item;
