@@ -11,12 +11,15 @@ class Item extends Component {
   render() {
     const { result } = this.props;
     const { title, thumbnail, price } = result;
+
     return (
       <div style={ this.style } data-testid="product">
+
         <h6>{title}</h6>
         <p>{ price }</p>
         <img src={ thumbnail } alt={ title } />
         <button type="button">Adicionar ao carrinho</button>
+
       </div>
 
     );

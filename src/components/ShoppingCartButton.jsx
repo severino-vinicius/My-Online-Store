@@ -16,14 +16,17 @@ class ShoppingCartButton extends Component {
     const { redirect } = this.state;
     return (
       <div>
+
         <button
           data-testid="shopping-cart-button"
           onClick={ this.redirectToCart }
         >
-          Carrinho
+          Ir pro Carrinho
         </button>
+
         { redirect
          && <Redirect to="/shopping-cart" />}
+
       </div>
     );
   }

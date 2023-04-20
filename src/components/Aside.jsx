@@ -12,6 +12,7 @@ class Aside extends Component {
     this.setState({
       categoriesList: ResultCategories,
     });
+    console.log(ResultCategories);
   }
 
   render() {
@@ -24,7 +25,7 @@ class Aside extends Component {
             onClick={ handleQuery }
             key={ category.id }
             data-testid="category"
-            id="category-button"
+            id={ category.id }
           >
             { category.name }
 

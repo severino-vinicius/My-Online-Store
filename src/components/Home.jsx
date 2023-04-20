@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getProductsByTerm } from '../services/api';
+import { getProductsByTerm, getProductsByCategory } from '../services/api';
 import ShoppingCartButton from './ShoppingCartButton';
 import Aside from './Aside';
 import Item from './Item';
@@ -12,29 +12,35 @@ class Home extends Component {
   };
 
   handleQuery = async (event) => {
-    const { value, id } = event.target;
+    const { id } = event.target;
+    const { inputValue } = this.state;
+
     this.setState({
-      emptyResult: false, // Zera o estado emptyResult para que a mensagem de nenhum produto encontrado não seja exibida quando o usuário limpar o input
+      emptyResult: false, // Zera o state emptyResult para que a mensagem de nenhum produto encontrado não seja exibida quando o usuário limpar o input
     });
-    if (id === 'input-research') { // Verifica a fonte do evento
-      if (event.key === 'Enter' || event.type === 'click') { // Se o usuário clicar no botão ou pressionar enter, a pesquisa é feita
-        const resultProducts = await getProductsByTerm(value);
+
+    if (id === 'input-research' || id === 'nav-search-button') { // Se o usuário clicar no botão ou pressionar enter, a pesquisa é feita
+      if (event.key === 'Enter' || event.type === 'click') { // Verifica a fonte, input ou botão 'Buscar', para fazer a pesquisa
+        const resultProducts = await getProductsByTerm(inputValue);
         this.setState({
           products: resultProducts,
         });
+
         if (resultProducts.length < 1) { // Se o array de produtos estiver vazio, o estado emptyResult é alterado para true e a mensagem de nenhum produto encontrado é exibida
           this.setState({
             emptyResult: true,
           });
         }
+
         this.setState({ // Limpa o input após a pesquisa
           inputValue: '',
         });
       }
-    } else if (id === 'category-button') { // Se o usuário clicar em uma categoria, a pesquisa é feita
-      const resultCategoryProducts = await getProductsByTerm(value);
+    } else if (id.startsWith('MLB')) { // Se o usuário clicar em uma categoria, a pesquisa é feita (É meio que uma gambiarra, a lógica que usei precisava usar o id. Como todo ID de categoria começa com MLB, funciona. Gostaria que me ajudassem a achar outra forma de fazer isso)
+      const categoryProducts = await getProductsByCategory(id);
+
       this.setState({
-        products: resultCategoryProducts,
+        products: categoryProducts,
       });
     }
   };
@@ -61,6 +67,7 @@ class Home extends Component {
             onKeyDown={ this.handleQuery }
           />
           <button
+            id="nav-search-button"
             data-testid="query-button"
             onClick={ this.handleQuery }
           >
@@ -68,8 +75,11 @@ class Home extends Component {
 
           </button>
           <ShoppingCartButton />
+
         </header>
+
         <Aside handleQuery={ this.handleQuery } />
+
         <main>
           <ul>
             {products.map((product) => (
