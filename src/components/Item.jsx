@@ -41,22 +41,22 @@ class Item extends Component {
 
     return (
       <div style={ this.style }>
-      <Link to={ `/product-detail/${id}` } data-testid="product-detail-link">
-      <div data-testid="product">
+        <Link to={ `/product-detail/${id}` } data-testid="product-detail-link">
+          <div data-testid="product">
 
-        <h6>{title}</h6>
-        <p>{ price }</p>
-        <img src={ thumbnail } alt={ title } />
-        </div>
-          </Link>
-           <button
-             onClick={ this.addToCart }
-             data-testid="product-add-to-cart"
-             type="button"
-           >
-            Adicionar ao carrinho
-           </button>
-        </div>
+            <h6>{title}</h6>
+            <p>{ price }</p>
+            <img src={ thumbnail } alt={ title } />
+          </div>
+        </Link>
+        <button
+          onClick={ this.addToCart }
+          data-testid="product-add-to-cart"
+          type="button"
+        >
+          Adicionar ao carrinho
+        </button>
+      </div>
     );
   }
 }
