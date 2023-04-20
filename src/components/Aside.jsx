@@ -12,7 +12,6 @@ class Aside extends Component {
     this.setState({
       categoriesList: ResultCategories,
     });
-    console.log(ResultCategories);
   }
 
   render() {
