@@ -20,9 +20,33 @@ class ProductDetails extends Component {
     });
   };
 
+  addToCart = () => {
+    const { productDetails } = this.state;
+    const product = productDetails;
+    if (!localStorage.getItem('cartList')) {
+      localStorage.setItem('cartList', JSON.stringify([]));
+    }
+    const cartList = JSON.parse(localStorage.getItem('cartList'));
+    const itemCount = cartList.filter((item) => item.id === productDetails.id);
+    if (itemCount.length === 0) {
+      product.count = 1;
+      cartList.push(product);
+      localStorage.setItem('cartList', JSON.stringify(cartList));
+    } else {
+      const newCartList = cartList.map((item) => {
+        if (item.id === productDetails.id) {
+          const newItem = item;
+          newItem.count += 1;
+          return newItem;
+        }
+        return item;
+      });
+      localStorage.setItem('cartList', JSON.stringify(newCartList));
+    }
+  };
+
   render() {
     const { productDetails } = this.state;
-    console.log(productDetails);
     return (
       <div>
         <h1>ProductDetails</h1>
@@ -37,6 +61,12 @@ class ProductDetails extends Component {
         <p data-testid="product-detail-price">
           { productDetails.price }
         </p>
+        <button
+          onClick={ this.addToCart }
+          data-testid="product-detail-add-to-cart"
+        >
+          Adicionar ao carrinho
+        </button>
         <ShoppingCartButton />
       </div>
     );
