@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 class Item extends Component {
-  style = {
+  style = { // Estilização do componente
     border: '1px solid black',
     padding: '10px',
     margin: '10px',
@@ -16,6 +16,7 @@ class Item extends Component {
         <h6>{title}</h6>
         <p>{ price }</p>
         <img src={ thumbnail } alt={ title } />
+        <button type="button">Adicionar ao carrinho</button>
       </div>
 
     );
