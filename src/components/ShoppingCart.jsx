@@ -5,6 +5,7 @@ class ShoppingCart extends Component {
   state = {
     cartList: [],
     redirect: false,
+    // totalPrice: 0,
   };
 
   style = {
@@ -36,6 +37,60 @@ class ShoppingCart extends Component {
     }
   };
 
+  removeOneUnit = ({ target }) => {
+    const { cartList } = this.state;
+    const { id } = target;
+    const newCartList = cartList.map((item) => {
+      if (item.id === id) {
+        if (item.count === 1) {
+          return item;
+        }
+        const newItem = item;
+        newItem.count -= 1;
+        return newItem;
+      }
+      return item;
+    }).filter((item) => item.count > 0);
+    localStorage.setItem('cartList', JSON.stringify(newCartList));
+    this.setState({
+      cartList: newCartList,
+    });
+  };
+
+  addOneUnit = ({ target }) => {
+    const { cartList } = this.state;
+    const { id } = target;
+    const newCartList = cartList.map((item) => {
+      if (item.id === id) {
+        const newItem = item;
+        newItem.count += 1;
+        return newItem;
+      }
+      return item;
+    });
+    localStorage.setItem('cartList', JSON.stringify(newCartList));
+    this.setState({
+      cartList: newCartList,
+    });
+  };
+
+  removeFromCart = ({ target }) => {
+    const { cartList } = this.state;
+    const { id } = target;
+    const newCartList = cartList.map((item) => {
+      if (item.id === id) {
+        const newItem = item;
+        newItem.count = 0;
+        return newItem;
+      }
+      return item;
+    }).filter((item) => item.count > 0);
+    localStorage.setItem('cartList', JSON.stringify(newCartList));
+    this.setState({
+      cartList: newCartList,
+    });
+  };
+
   render() {
     const { cartList, redirect } = this.state;
     return (
@@ -54,9 +109,39 @@ class ShoppingCart extends Component {
             ? (cartList.map((item) => (
               <div style={ this.style } key={ item.id }>
                 <p data-testid="shopping-cart-product-name">{ item.title }</p>
-                <p data-testid="shopping-cart-product-quantity">{ item.count }</p>
                 <p data-testid="shopping-cart-product-price">{ item.price }</p>
                 <img src={ item.thumbnail } alt={ item.title } />
+                <p data-testid="shopping-cart-product-quantity">{ item.count }</p>
+                <button
+                  id={ item.id }
+                  onClick={ this.removeOneUnit }
+                  data-testid="product-decrease-quantity"
+                >
+                  {' '}
+                  -
+                  {' '}
+
+                </button>
+                <button
+                  id={ item.id }
+                  onClick={ this.addOneUnit }
+                  data-testid="product-increase-quantity"
+                >
+                  {' '}
+                  +
+                  {' '}
+
+                </button>
+                <button
+                  id={ item.id }
+                  onClick={ this.removeFromCart }
+                  data-testid="remove-product"
+                >
+                  {' '}
+                  X
+                  {' '}
+
+                </button>
               </div>
             )))
             : <p data-testid="shopping-cart-empty-message"> Seu carrinho está vazio</p>
