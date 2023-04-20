@@ -42,6 +42,16 @@ class Home extends Component {
       this.setState({
         products: categoryProducts,
       });
+
+      if (categoryProducts.length < 1) { // Se o array de produtos estiver vazio, o estado emptyResult é alterado para true e a mensagem de nenhum produto encontrado é exibida
+        this.setState({
+          emptyResult: true,
+        });
+      }
+
+      this.setState({ // Limpa o input após a pesquisa
+        inputValue: '',
+      });
     }
   };
 
