@@ -16,12 +16,11 @@ class Aside extends Component {
   render() {
     const { categoriesList } = this.state;
     return (
-      <>
-        <div>Aside</div>
+      <aside>
         { categoriesList.map((category) => (
           <button key={ category.id } data-testid="category">{ category.name }</button>
         ))}
-      </>
+      </aside>
 
     );
   }

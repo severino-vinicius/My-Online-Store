@@ -1,14 +1,30 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom/';
 
 class ShoppingCart extends Component {
   state = {
     cartList: [],
+    redirect: false,
+  };
+
+  redirectToHome = () => {
+    this.setState({
+      redirect: true,
+    });
   };
 
   render() {
-    const { cartList } = this.state;
+    const { cartList, redirect } = this.state;
     return (
       <div>
+        <button
+          data-testid=""
+          onClick={ this.redirectToHome }
+        >
+          Voltar para a Home
+        </button>
+        { redirect
+         && <Redirect to="/" />}
         {
           cartList.length > 0
             ? false
