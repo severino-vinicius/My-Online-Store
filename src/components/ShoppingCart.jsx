@@ -7,6 +7,12 @@ class ShoppingCart extends Component {
     redirect: false,
   };
 
+  style = {
+    border: '1px solid black',
+    padding: '10px',
+    margin: '10px',
+  };
+
   componentDidMount() {
     this.getCartList();
   }
@@ -46,7 +52,7 @@ class ShoppingCart extends Component {
         {
           cartList.length > 0
             ? (cartList.map((item) => (
-              <div key={ item.id }>
+              <div style={ this.style } key={ item.id }>
                 <p data-testid="shopping-cart-product-name">{ item.title }</p>
                 <p data-testid="shopping-cart-product-quantity">{ item.count }</p>
                 <p data-testid="shopping-cart-product-price">{ item.price }</p>
