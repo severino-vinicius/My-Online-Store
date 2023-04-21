@@ -5,6 +5,7 @@ class ShoppingCart extends Component {
   state = {
     cartList: [],
     redirect: false,
+    checkout: false,
     // totalPrice: 0,
   };
 
@@ -21,6 +22,12 @@ class ShoppingCart extends Component {
   redirectToHome = () => {
     this.setState({
       redirect: true,
+    });
+  };
+
+  redirectToCheckout = () => {
+    this.setState({
+      checkout: true,
     });
   };
 
@@ -92,7 +99,7 @@ class ShoppingCart extends Component {
   };
 
   render() {
-    const { cartList, redirect } = this.state;
+    const { cartList, redirect, checkout } = this.state;
     return (
       <div>
         { this.verifyCartList() }
@@ -104,6 +111,13 @@ class ShoppingCart extends Component {
         </button>
         { redirect
          && <Redirect to="/" />}
+        <button
+          onClick={ this.redirectToCheckout }
+          data-testid="checkout-products"
+        >
+          Finalizar Compra
+        </button>
+        { checkout && <Redirect to="/checkout" />}
         {
           cartList.length > 0
             ? (cartList.map((item) => (
