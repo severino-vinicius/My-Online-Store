@@ -81,6 +81,12 @@ class ShoppingCart extends Component {
     });
   };
 
+  totalPrice = () => {
+    const { cartList } = this.state;
+    const totalPrice = cartList.reduce((acc, item) => acc + (item.count * item.price), 0);
+    return totalPrice;
+  };
+
   removeFromCart = ({ target }) => {
     const { cartList } = this.state;
     const { id } = target;
@@ -117,6 +123,10 @@ class ShoppingCart extends Component {
         >
           Finalizar Compra
         </button>
+        <br />
+        Preço Total: R$:
+        {' '}
+        { this.totalPrice() }
         { checkout && <Redirect to="/checkout" />}
         {
           cartList.length > 0
