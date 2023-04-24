@@ -25,7 +25,7 @@ class Item extends Component {
       getCartSize();
     } else {
       const newCartList = cartList.map((item) => {
-        if (item.id === result.id) {
+        if (item.id === result.id && item.count < item.available_quantity) {
           const newItem = item;
           newItem.count += 1;
           return newItem;
@@ -44,7 +44,7 @@ class Item extends Component {
     return (
       <div style={ this.style }>
         <Link to={ `/product-detail/${id}` } data-testid="product-detail-link">
-          <div data-testid="product">
+          <div data-testid="product" className="bg-red">
 
             <h6>{title}</h6>
             <p>{ price }</p>

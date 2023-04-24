@@ -33,6 +33,7 @@ class ShoppingCart extends Component {
 
   getCartList = () => {
     const cartList = JSON.parse(localStorage.getItem('cartList'));
+    console.log(cartList);
     this.setState({
       cartList,
     });
@@ -68,7 +69,7 @@ class ShoppingCart extends Component {
     const { cartList } = this.state;
     const { id } = target;
     const newCartList = cartList.map((item) => {
-      if (item.id === id) {
+      if (item.id === id && item.count < item.available_quantity) {
         const newItem = item;
         newItem.count += 1;
         return newItem;
