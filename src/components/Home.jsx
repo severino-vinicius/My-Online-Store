@@ -25,14 +25,15 @@ class Home extends Component {
     }
   };
 
-  getCartSize = () => {
+  getCartSize = async () => {
     this.verifyCartList();
     const cartList = JSON.parse(localStorage.getItem('cartList'));
     const cartSize = cartList.reduce((acc, item) => acc + item.count, 0);
-    localStorage.setItem('cartSize', JSON.stringify(cartSize));
-    const cartSizeLocalS = JSON.parse(localStorage.getItem('cartSize'));
+    console.log(cartSize);
+    // localStorage.setItem('cartSize', JSON.stringify(cartSize));
+    // const cartSizeLocalS = JSON.parse(localStorage.getItem('cartSize'));
     this.setState({
-      cartSize: cartSizeLocalS,
+      cartSize,
     });
   };
 

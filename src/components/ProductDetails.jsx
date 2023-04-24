@@ -34,7 +34,7 @@ class ProductDetails extends Component {
     }
   };
 
-  getCartSize = (callback) => {
+  getCartSize = () => {
     this.verifyCartList();
     const cartList = JSON.parse(localStorage.getItem('cartList'));
     const cartSize = cartList.reduce((acc, item) => acc + item.count, 0);
@@ -42,7 +42,7 @@ class ProductDetails extends Component {
     // const cartSizeLocalS = JSON.parse(localStorage.getItem('cartSize'));
     this.setState({
       cartSize,
-    }, callback);
+    });
   };
 
   handleId = async () => {
@@ -55,7 +55,6 @@ class ProductDetails extends Component {
 
   addToCart = () => {
     const { productDetails } = this.state;
-    this.getCartSize();
     const product = productDetails;
     if (!localStorage.getItem('cartList')) {
       localStorage.setItem('cartList', JSON.stringify([]));
@@ -66,6 +65,7 @@ class ProductDetails extends Component {
       product.count = 1;
       cartList.push(product);
       localStorage.setItem('cartList', JSON.stringify(cartList));
+      this.getCartSize();
     } else {
       const newCartList = cartList.map((item) => {
         if (item.id === productDetails.id) {
@@ -76,6 +76,7 @@ class ProductDetails extends Component {
         return item;
       });
       localStorage.setItem('cartList', JSON.stringify(newCartList));
+      this.getCartSize();
     }
   };
 

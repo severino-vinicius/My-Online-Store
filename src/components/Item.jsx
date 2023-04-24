@@ -9,9 +9,8 @@ class Item extends Component {
     margin: '10px',
   };
 
-  addToCart = async () => {
+  addToCart = () => {
     const { result, getCartSize } = this.props;
-    await getCartSize();
     // console.log(result);
     const product = result;
     if (!localStorage.getItem('cartList')) {
@@ -23,6 +22,7 @@ class Item extends Component {
       product.count = 1;
       cartList.push(product);
       localStorage.setItem('cartList', JSON.stringify(cartList));
+      getCartSize();
     } else {
       const newCartList = cartList.map((item) => {
         if (item.id === result.id) {
@@ -33,6 +33,7 @@ class Item extends Component {
         return item;
       });
       localStorage.setItem('cartList', JSON.stringify(newCartList));
+      getCartSize();
     }
   };
 
