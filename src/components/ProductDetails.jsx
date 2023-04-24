@@ -13,6 +13,7 @@ class ProductDetails extends Component {
       text: '',
       rating: '',
     },
+    cartSize: 0,
   };
 
   componentDidMount() {
@@ -20,10 +21,31 @@ class ProductDetails extends Component {
     if (evaluations.length === 0) {
       this.restoreEvaluations();
     }
-    this.hadleId();
+    this.handleId();
+    this.getCartSize();
   }
 
-  hadleId = async () => {
+  verifyCartList = () => {
+    if (!localStorage.getItem('cartList')) {
+      localStorage.setItem('cartList', JSON.stringify([]));
+    }
+    if (!localStorage.getItem('cartSize')) {
+      localStorage.setItem('cartSize', JSON.stringify(0));
+    }
+  };
+
+  getCartSize = (callback) => {
+    this.verifyCartList();
+    const cartList = JSON.parse(localStorage.getItem('cartList'));
+    const cartSize = cartList.reduce((acc, item) => acc + item.count, 0);
+    // localStorage.setItem('cartSize', JSON.stringify(cartSize));
+    // const cartSizeLocalS = JSON.parse(localStorage.getItem('cartSize'));
+    this.setState({
+      cartSize,
+    }, callback);
+  };
+
+  handleId = async () => {
     const { match: { params: { id } } } = this.props;
     const resultProductDetails = await getProductById(id);
     this.setState({
@@ -33,6 +55,7 @@ class ProductDetails extends Component {
 
   addToCart = () => {
     const { productDetails } = this.state;
+    this.getCartSize();
     const product = productDetails;
     if (!localStorage.getItem('cartList')) {
       localStorage.setItem('cartList', JSON.stringify([]));
@@ -110,12 +133,12 @@ class ProductDetails extends Component {
   };
 
   render() {
-    const { productDetails, evaluations,
+    const { productDetails, evaluations, cartSize,
       errorMsg, evaluation: { email, text } } = this.state;
     return (
       <div>
         <h1>ProductDetails</h1>
-        <ShoppingCartButton />
+        <ShoppingCartButton cartSize={ cartSize } />
         <img
           src={ productDetails.thumbnail }
           alt="productDetails.title"
@@ -130,7 +153,7 @@ class ProductDetails extends Component {
         <button onClick={ this.addToCart } data-testid="product-detail-add-to-cart">
           Adicionar ao carrinho
         </button>
-        <h2>Avaliação do produo</h2>
+        <h2>Avaliação do produto</h2>
         <form>
           <label>
             Email:

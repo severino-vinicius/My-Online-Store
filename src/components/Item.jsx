@@ -9,8 +9,9 @@ class Item extends Component {
     margin: '10px',
   };
 
-  addToCart = () => {
-    const { result } = this.props;
+  addToCart = async () => {
+    const { result, getCartSize } = this.props;
+    await getCartSize();
     // console.log(result);
     const product = result;
     if (!localStorage.getItem('cartList')) {

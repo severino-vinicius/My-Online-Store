@@ -9,6 +9,31 @@ class Home extends Component {
     products: [],
     emptyResult: false, // Estado para exibir mensagem de nenhum produto encontrado/
     inputValue: '', // Estado para limpar o input após a pesquisa e fazer a lógica de exibição da mensagem inicial
+    cartSize: 0,
+  };
+
+  componentDidMount() {
+    this.getCartSize();
+  }
+
+  verifyCartList = () => {
+    if (!localStorage.getItem('cartList')) {
+      localStorage.setItem('cartList', JSON.stringify([]));
+    }
+    if (!localStorage.getItem('cartSize')) {
+      localStorage.setItem('cartSize', JSON.stringify(0));
+    }
+  };
+
+  getCartSize = () => {
+    this.verifyCartList();
+    const cartList = JSON.parse(localStorage.getItem('cartList'));
+    const cartSize = cartList.reduce((acc, item) => acc + item.count, 0);
+    localStorage.setItem('cartSize', JSON.stringify(cartSize));
+    const cartSizeLocalS = JSON.parse(localStorage.getItem('cartSize'));
+    this.setState({
+      cartSize: cartSizeLocalS,
+    });
   };
 
   handleQuery = async (event) => {
@@ -63,7 +88,7 @@ class Home extends Component {
   };
 
   render() {
-    const { products, emptyResult, inputValue } = this.state;
+    const { products, emptyResult, inputValue, cartSize } = this.state;
     return (
       <>
         <header>
@@ -84,7 +109,7 @@ class Home extends Component {
             Buscar
 
           </button>
-          <ShoppingCartButton />
+          <ShoppingCartButton cartSize={ cartSize } />
 
         </header>
 
@@ -93,7 +118,11 @@ class Home extends Component {
         <main>
           <ul>
             {products.map((product) => (
-              <Item key={ product.id } result={ product } />))}
+              <Item
+                key={ product.id }
+                result={ product }
+                getCartSize={ this.getCartSize }
+              />))}
           </ul>
 
           { !emptyResult && inputValue.length === 0
