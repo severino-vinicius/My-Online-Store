@@ -40,7 +40,7 @@ class Item extends Component {
   render() {
     const { result } = this.props;
     const { title, thumbnail, price, id } = result;
-
+    console.log(result.shipping);
     return (
       <div style={ this.style }>
         <Link to={ `/product-detail/${id}` } data-testid="product-detail-link">
@@ -49,6 +49,8 @@ class Item extends Component {
             <h6>{title}</h6>
             <p>{ price }</p>
             <img src={ thumbnail } alt={ title } />
+            {result.shipping.free_shipping
+              ? <p data-testid="free-shipping">Frete Grátis</p> : null}
           </div>
         </Link>
         <button

@@ -137,6 +137,8 @@ class ShoppingCart extends Component {
                 <p data-testid="shopping-cart-product-price">{ item.price }</p>
                 <img src={ item.thumbnail } alt={ item.title } />
                 <p data-testid="shopping-cart-product-quantity">{ item.count }</p>
+                {item.shipping.free_shipping
+                  ? <p data-testid="free-shipping">Frete Grátis</p> : null}
                 <button
                   id={ item.id }
                   onClick={ this.removeOneUnit }

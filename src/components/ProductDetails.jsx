@@ -4,16 +4,15 @@ import { getProductById } from '../services/api';
 import ShoppingCartButton from './ShoppingCartButton';
 
 class ProductDetails extends Component {
-  state = {
-    productDetails: [],
+  state = { productDetails: [],
     evaluations: [],
     errorMsg: false,
-    evaluation: {
-      email: '',
+    evaluation: { email: '',
       text: '',
       rating: '',
     },
     cartSize: 0,
+    isFree: false,
   };
 
   componentDidMount() {
@@ -38,19 +37,15 @@ class ProductDetails extends Component {
     this.verifyCartList();
     const cartList = JSON.parse(localStorage.getItem('cartList'));
     const cartSize = cartList.reduce((acc, item) => acc + item.count, 0);
-    // localStorage.setItem('cartSize', JSON.stringify(cartSize));
-    // const cartSizeLocalS = JSON.parse(localStorage.getItem('cartSize'));
-    this.setState({
-      cartSize,
-    });
+    this.setState({ cartSize });
   };
 
   handleId = async () => {
     const { match: { params: { id } } } = this.props;
     const resultProductDetails = await getProductById(id);
-    this.setState({
-      productDetails: resultProductDetails,
-    });
+    const isFree = resultProductDetails.shipping.free_shipping;
+    this.setState({ productDetails: resultProductDetails,
+      isFree });
   };
 
   addToCart = () => {
@@ -82,13 +77,9 @@ class ProductDetails extends Component {
 
   handleChange = ({ target }) => {
     const { value, name } = target;
-    this.setState((prevState) => ({
-      errorMsg: false, // Sempre que algo for modificado significa que o erro não existe mais, caso contrário errorMsg seria true, então sempre que algo for modificado, o erro é resetado
-      evaluation: {
-        ...prevState.evaluation,
-        [name]: value,
-      },
-    }));
+    this.setState((prevState) => ({ errorMsg: false, // Sempre que algo for modificado significa que o erro não existe mais, caso contrário errorMsg seria true, então sempre que algo for modificado, o erro é resetado
+      evaluation: { ...prevState.evaluation,
+        [name]: value } }));
   };
 
   handleSubmit = (event) => {
@@ -96,9 +87,7 @@ class ProductDetails extends Component {
     const { match: { params: { id } } } = this.props;
     const { evaluation: { email, rating } } = this.state;
     if (!(email.includes('@')) || !rating) { // Verifica se o email é válido e se o rating foi selecionado
-      this.setState({
-        errorMsg: true, // Se o email não for válido ou o rating não for selecionado, errorMsg é true
-      });
+      this.setState({ errorMsg: true }); // Se o email não for válido ou o rating não for selecionado, errorMsg é true
     } else { // Senão continua com o processo de adicionar a avaliação
       const { evaluation } = this.state;
       if (!localStorage.getItem(`${id}`)) {
@@ -107,17 +96,13 @@ class ProductDetails extends Component {
       const evaluations = JSON.parse(localStorage.getItem(`${id}`));
       evaluations.push(evaluation);
       localStorage.setItem(`${id}`, JSON.stringify(evaluations));
-      this.setState({ // Reseta o errorMsg caso ele ainda exista (Meio que impossível mas vai saber né)
-        errorMsg: false,
+      this.setState({ errorMsg: false, // Reseta o errorMsg caso ele ainda exista (Meio que impossível mas vai saber né)
         evaluations, // Adiciona a avaliação ao estado para a renderização ser feita
       }, () => {
-        this.setState({ // Reseta o estado evaluation para que o formulário fique vazio
-          evaluation: {
-            email: '',
-            text: '',
-            rating: '',
-          },
-        });
+        this.setState({ evaluation: { email: '', // Reseta o estado evaluation para que o formulário fique vazio
+          text: '',
+          rating: '',
+        } });
       });
     }
   };
@@ -128,32 +113,33 @@ class ProductDetails extends Component {
       localStorage.setItem(`${id}`, JSON.stringify([]));
     }
     const evaluations = JSON.parse(localStorage.getItem(`${id}`));
-    this.setState({
-      evaluations,
-    });
+    this.setState({ evaluations });
   };
 
   render() {
     const { productDetails, evaluations, cartSize,
-      errorMsg, evaluation: { email, text } } = this.state;
+      errorMsg, evaluation: { email, text }, isFree } = this.state;
     return (
       <div>
         <h1>ProductDetails</h1>
         <ShoppingCartButton cartSize={ cartSize } />
-        <img
-          src={ productDetails.thumbnail }
-          alt="productDetails.title"
-          data-testid="product-detail-image"
-        />
-        <h2 data-testid="product-detail-name">
-          { productDetails.title }
-        </h2>
-        <p data-testid="product-detail-price">
-          { productDetails.price }
-        </p>
-        <button onClick={ this.addToCart } data-testid="product-detail-add-to-cart">
-          Adicionar ao carrinho
-        </button>
+        <div>
+          <img
+            src={ productDetails.thumbnail }
+            alt="productDetails.title"
+            data-testid="product-detail-image"
+          />
+          <h2 data-testid="product-detail-name">
+            { productDetails.title }
+          </h2>
+          <p data-testid="product-detail-price">
+            { productDetails.price }
+          </p>
+          { isFree ? <p data-testid="free-shipping">Frete grátis</p> : null}
+          <button onClick={ this.addToCart } data-testid="product-detail-add-to-cart">
+            Adicionar ao carrinho
+          </button>
+        </div>
         <h2>Avaliação do produto</h2>
         <form>
           <label>
@@ -238,11 +224,7 @@ class ProductDetails extends Component {
 }
 
 ProductDetails.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-};
+  match: PropTypes.shape({ params: PropTypes.shape({ id: PropTypes.string.isRequired,
+  }).isRequired }).isRequired };
 
 export default ProductDetails;
